@@ -1,0 +1,59 @@
+{
+  "baseline": {
+    "conv": 0.032426666666666666,
+    "margin_per_visitor": 1.0643314666666666,
+    "margin_sd": 8.0029273998983,
+    "cv": 7.5192058588311035,
+    "winsor_cap": 121.94045999999507,
+    "pilot_n": 150000,
+    "r2_prespend_isnew": 0.02124648130739515,
+    "cuped_var_reduction_prespend_only": 0.021210014386151332
+  },
+  "traffic": {
+    "total": 400000,
+    "per_arm": 200000,
+    "days": 14,
+    "per_day": 28571.428571428572
+  },
+  "ideal": {
+    "n_per_arm_5pct": 355010.8379013345,
+    "days_needed_5pct": 24.850758653093415,
+    "n_per_arm_5pct_adj": 347468.10676994117,
+    "days_needed_5pct_adj": 24.32276747389588
+  },
+  "achieved": {
+    "mde_margin_raw": 0.0666155798125835,
+    "mde_margin_adj": 0.06590410711499144,
+    "mde_conv_rel": 0.04896290376628099,
+    "n_per_arm_conv_5pct": 191882.9657929445,
+    "n_per_arm_conv_3pct": 527987.257731049
+  },
+  "sim_power": [
+    {
+      "rel_mde": 0.03,
+      "power_sim": 0.235,
+      "power_formula": 0.24249986189309197
+    },
+    {
+      "rel_mde": 0.05,
+      "power_sim": 0.5375,
+      "power_formula": 0.5567902703974889
+    },
+    {
+      "rel_mde": 0.0667,
+      "power_sim": 0.7625,
+      "power_formula": 0.8009924844229077
+    },
+    {
+      "rel_mde": 0.08,
+      "power_sim": 0.8625,
+      "power_formula": 0.9199174473167091
+    }
+  ],
+  "new_only": {
+    "share_new": 0.39902,
+    "margin_mean": 0.5983382620754181,
+    "margin_sd": 6.346427817201988,
+    "n_per_arm_5pct": 706419.6967632533
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "srm_all": {
+    "chi2": 71.2173670716754,
+    "p": 3.1995930511605154e-17,
+    "n_treat": 194711,
+    "n_ctrl": 200013,
+    "share_treat": 0.49328391483669604
+  },
+  "srm_by_segment": [
+    {
+      "segment": "app_old=1",
+      "n": 30511,
+      "share_treat": 0.415587820785946,
+      "p": 3.957667184509222e-191
+    },
+    {
+      "segment": "device=mobile",
+      "n": 234528,
+      "share_treat": 0.4879332105334971,
+      "p": 1.4778859289253583e-31
+    },
+    {
+      "segment": "is_new=0",
+      "n": 236651,
+      "share_treat": 0.4928016361646475,
+      "p": 2.4956460702322193e-12
+    },
+    {
+      "segment": "source=organic",
+      "n": 138460,
+      "share_treat": 0.49318936877076414,
+      "p": 4.0096116572368256e-07
+    },
+    {
+      "segment": "is_new=1",
+      "n": 158073,
+      "share_treat": 0.4940059339672177,
+      "p": 1.8765010310589929e-06
+    },
+    {
+      "segment": "source=direct",
+      "n": 78713,
+      "share_treat": 0.49235831438263056,
+      "p": 1.80388320482744e-05
+    },
+    {
+      "segment": "source=paid",
+      "n": 118447,
+      "share_treat": 0.49406907730883853,
+      "p": 4.457527259563943e-05
+    },
+    {
+      "segment": "source=email",
+      "n": 59104,
+      "share_treat": 0.49316459122902,
+      "p": 0.0008887776371023958
+    },
+    {
+      "segment": "device=tablet",
+      "n": 32076,
+      "share_treat": 0.502400548696845,
+      "p": 0.3898630853440208
+    },
+    {
+      "segment": "device=desktop",
+      "n": 128120,
+      "share_treat": 0.5007961286294099,
+      "p": 0.5687250122693592
+    },
+    {
+      "segment": "app_old=0",
+      "n": 364213,
+      "share_treat": 0.4997927037200759,
+      "p": 0.8024273746496442
+    }
+  ],
+  "srm_mobile_by_appold": {
+    "0": {
+      "chi2": 1.2698990770376979,
+      "p": 0.2597856138301003,
+      "n_treat": 101754,
+      "n_ctrl": 102263,
+      "share_treat": 0.49875255493414766
+    },
+    "1": {
+      "chi2": 869.6142702631838,
+      "p": 3.957667184509222e-191,
+      "n_treat": 12680,
+      "n_ctrl": 17831,
+      "share_treat": 0.415587820785946
+    }
+  },
+  "srm_clean": {
+    "chi2": 0.06260347653708133,
+    "p": 0.8024273746496442,
+    "n_treat": 182031,
+    "n_ctrl": 182182,
+    "share_treat": 0.4997927037200759
+  },
+  "old_app_conv": [
+    {
+      "variant": 0,
+      "n": 17831,
+      "conv": 0.030284336268296786
+    },
+    {
+      "variant": 1,
+      "n": 12680,
+      "conv": 0.04613564668769716
+    }
+  ],
+  "naive_conv_lift_all": {
+    "diff": 0.002908718904572255,
+    "se": 0.0005829429941391221,
+    "lo": 0.001766171631019632,
+    "hi": 0.004051266178124878,
+    "p": 5.967556354408477e-07,
+    "mean_c": 0.03326283791553549,
+    "mean_t": 0.036171556820107746
+  },
+  "clean_conv_lift": {
+    "diff": 0.0019231158869492393,
+    "se": 0.0006049659954819121,
+    "lo": 0.0007374043239332705,
+    "hi": 0.003108827449965208,
+    "p": 0.0014784838530892935,
+    "mean_c": 0.03355435773018191,
+    "mean_t": 0.03547747361713115
+  },
+  "balance": [
+    {
+      "covariate": "is_new",
+      "all users": 0.0024,
+      "excl. old-app": 0.0038
+    },
+    {
+      "covariate": "pre_spend_90d",
+      "all users": -0.0031,
+      "excl. old-app": -0.0057
+    },
+    {
+      "covariate": "pre_orders_90d",
+      "all users": -0.0035,
+      "excl. old-app": -0.0057
+    },
+    {
+      "covariate": "app_old",
+      "all users": -0.0901,
+      "excl. old-app": 0.0
+    },
+    {
+      "covariate": "arrival_day",
+      "all users": 0.0039,
+      "excl. old-app": 0.0022
+    },
+    {
+      "covariate": "device=mobile",
+      "all users": -0.0259,
+      "excl. old-app": -0.0047
+    },
+    {
+      "covariate": "device=desktop",
+      "all users": 0.0208,
+      "excl. old-app": 0.003
+    },
+    {
+      "covariate": "device=tablet",
+      "all users": 0.0108,
+      "excl. old-app": 0.0032
+    },
+    {
+      "covariate": "source=organic",
+      "all users": -0.0003,
+      "excl. old-app": -0.0002
+    },
+    {
+      "covariate": "source=paid",
+      "all users": 0.0021,
+      "excl. old-app": 0.003
+    },
+    {
+      "covariate": "source=email",
+      "all users": -0.0002,
+      "excl. old-app": -0.0008
+    },
+    {
+      "covariate": "source=direct",
+      "all users": -0.0018,
+      "excl. old-app": -0.0026
+    }
+  ],
+  "aa": {
+    "conv_z": {
+      "fpr": 0.054,
+      "n_sims": 1000
+    },
+    "margin_welch": {
+      "fpr": 0.046,
+      "n_sims": 1000
+    },
+    "margin_cuped": {
+      "fpr": 0.047,
+      "n_sims": 1000
+    }
+  },
+  "aa_n": 182182
+}

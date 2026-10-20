@@ -1,0 +1,9 @@
+data/*.csv.gz
+data/criteo/
+__pycache__/
+*.pyc
+results/montecarlo.log
+.ipynb_checkpoints/
+memo/03_resume_and_interview.md
+memo/03_resume_and_interview.md
+memo/03_resume_and_interview.md

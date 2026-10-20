@@ -1,0 +1,225 @@
+{
+  "table": [
+    {
+      "item": "Conversion lift, clean pop. (relative)",
+      "estimate": 0.05731,
+      "lo": 0.02098,
+      "hi": 0.09365,
+      "truth_window": 0.06645,
+      "truth_steady": 0.04988,
+      "covers_window": true,
+      "covers_steady": true
+    },
+    {
+      "item": "Conversion lift, NAIVE all users (relative)",
+      "estimate": 0.08745,
+      "lo": 0.05164,
+      "hi": 0.12325,
+      "truth_window": 0.06606,
+      "truth_steady": 0.04966,
+      "covers_window": true,
+      "covers_steady": false
+    },
+    {
+      "item": "Margin/visitor $: Welch t-test (raw)",
+      "estimate": -0.0075,
+      "lo": -0.06168,
+      "hi": 0.04667,
+      "truth_window": 0.01621,
+      "truth_steady": 0.00109,
+      "covers_window": true,
+      "covers_steady": true
+    },
+    {
+      "item": "Margin/visitor $: Welch, winsorised at pilot P99.95",
+      "estimate": -0.00107,
+      "lo": -0.0509,
+      "hi": 0.04876,
+      "truth_window": 0.01621,
+      "truth_steady": 0.00109,
+      "covers_window": true,
+      "covers_steady": true
+    },
+    {
+      "item": "Margin/visitor $: Bootstrap percentile CI (2,000 reps)",
+      "estimate": -0.0075,
+      "lo": -0.06155,
+      "hi": 0.04303,
+      "truth_window": 0.01621,
+      "truth_steady": 0.00109,
+      "covers_window": true,
+      "covers_steady": true
+    },
+    {
+      "item": "Margin/visitor $: CUPED (pre-period spend)",
+      "estimate": -0.00051,
+      "lo": -0.0541,
+      "hi": 0.05308,
+      "truth_window": 0.01621,
+      "truth_steady": 0.00109,
+      "covers_window": true,
+      "covers_steady": true
+    },
+    {
+      "item": "Margin/visitor $: Regression adj. (pre-spend, is_new, device; interacted)",
+      "estimate": -0.0011,
+      "lo": -0.05466,
+      "hi": 0.05246,
+      "truth_window": 0.01621,
+      "truth_steady": 0.00109,
+      "covers_window": true,
+      "covers_steady": true
+    }
+  ],
+  "segments": [
+    {
+      "segment": "New",
+      "status": "pre-registered",
+      "est_rel": 0.07676,
+      "lo": -0.03546,
+      "hi": 0.18898,
+      "truth_window_rel": 0.09218,
+      "truth_steady_rel": 0.06024,
+      "covers_window": true,
+      "sig_raw": false
+    },
+    {
+      "segment": "Returning",
+      "status": "pre-registered",
+      "est_rel": -0.02792,
+      "lo": -0.08191,
+      "hi": 0.02607,
+      "truth_window_rel": -0.00678,
+      "truth_steady_rel": -0.01548,
+      "covers_window": true,
+      "sig_raw": false
+    },
+    {
+      "segment": "Mobile",
+      "status": "pre-registered",
+      "est_rel": -0.03366,
+      "lo": -0.10125,
+      "hi": 0.03394,
+      "truth_window_rel": 0.01452,
+      "truth_steady_rel": 0.00079,
+      "covers_window": true,
+      "sig_raw": false
+    },
+    {
+      "segment": "Desktop",
+      "status": "pre-registered",
+      "est_rel": 0.00865,
+      "lo": -0.0676,
+      "hi": 0.08491,
+      "truth_window_rel": 0.01668,
+      "truth_steady_rel": 0.00221,
+      "covers_window": true,
+      "sig_raw": false
+    },
+    {
+      "segment": "Tablet",
+      "status": "pre-registered",
+      "est_rel": 0.08208,
+      "lo": -0.0945,
+      "hi": 0.25866,
+      "truth_window_rel": 0.0061,
+      "truth_steady_rel": -0.00414,
+      "covers_window": true,
+      "sig_raw": false
+    },
+    {
+      "segment": "Organic",
+      "status": "exploratory",
+      "est_rel": -0.01114,
+      "lo": -0.0924,
+      "hi": 0.07013,
+      "truth_window_rel": 0.0106,
+      "truth_steady_rel": -0.00229,
+      "covers_window": true,
+      "sig_raw": false
+    },
+    {
+      "segment": "Paid",
+      "status": "exploratory",
+      "est_rel": -0.04621,
+      "lo": -0.14455,
+      "hi": 0.05214,
+      "truth_window_rel": 0.02126,
+      "truth_steady_rel": 0.00518,
+      "covers_window": true,
+      "sig_raw": false
+    },
+    {
+      "segment": "Email",
+      "status": "exploratory",
+      "est_rel": -0.06092,
+      "lo": -0.16837,
+      "hi": 0.04654,
+      "truth_window_rel": 0.00661,
+      "truth_steady_rel": -0.00776,
+      "covers_window": true,
+      "sig_raw": false
+    },
+    {
+      "segment": "Direct",
+      "status": "exploratory",
+      "est_rel": 0.0996,
+      "lo": -0.01008,
+      "hi": 0.20927,
+      "truth_window_rel": 0.02123,
+      "truth_steady_rel": 0.00914,
+      "covers_window": true,
+      "sig_raw": false
+    }
+  ],
+  "winsor_shift_vs_raw": 0.006435621272846692,
+  "bug": {
+    "n_dropped": 5276,
+    "share_of_treat_arm": 0.026381714811462745
+  },
+  "true_effects": {
+    "clean_window": {
+      "conv_rel": 0.06645335958651248,
+      "margin_rel": 0.014759702313099513,
+      "margin_ate": 0.016213686388762305
+    },
+    "clean_steady": {
+      "conv_rel": 0.04988104028222155,
+      "margin_rel": 0.0009961925741333337,
+      "margin_ate": 0.0010943278961308422
+    },
+    "new_steady": {
+      "conv_rel": 0.11563876651982376,
+      "margin_rel": 0.06023834043104199,
+      "margin_ate": 0.03592712773261286
+    },
+    "returning_steady": {
+      "conv_rel": 0.03095615425250921,
+      "margin_rel": -0.015483207752710011,
+      "margin_ate": -0.02220942495203837
+    },
+    "new_window": {
+      "margin_rel": 0.0921762622934219
+    },
+    "returning_window": {
+      "margin_rel": -0.006775277933131439
+    },
+    "ship_cost_per_buyer_ctrl": 4.715604233325129
+  },
+  "by_day_conv_rel_all_users": [
+    0.11555075593952491,
+    0.09460946094609464,
+    0.08133971291866034,
+    0.06192660550458714,
+    0.07024793388429737,
+    0.05128205128205127,
+    0.05866425992779784,
+    0.07377979568671951,
+    0.05481120584652864,
+    0.06705882352941185,
+    0.05275498241500596,
+    0.054358974358974306,
+    0.047202797202797235,
+    0.052132701421800876
+  ]
+}

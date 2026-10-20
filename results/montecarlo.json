@@ -1,0 +1,30 @@
+{
+  "n_reps": 100,
+  "srm_flagged_all": 1.0,
+  "srm_flagged_clean_at_5pct": 0.04,
+  "margin": {
+    "coverage_window": 0.94,
+    "coverage_steady": 0.88,
+    "bias_raw": -0.004707219837878807,
+    "bias_winsor": -0.005489895081049856,
+    "bias_cuped": -0.004893755680755325,
+    "coverage_cuped_window": 0.93,
+    "mean_ci_width_raw": 0.10699521518583005,
+    "mean_ci_width_cuped": 0.10583110390886524,
+    "sd_est_raw": 0.0307945793218012,
+    "sd_est_cuped": 0.030059570112029487,
+    "truth_window_mean": 0.01788606182730239,
+    "truth_steady_mean": 0.0034311186521438276,
+    "share_ci_excludes_zero": 0.14
+  },
+  "conversion": {
+    "bias_clean_rel": -4.3000419534708204e-05,
+    "coverage_clean_window": 0.91,
+    "coverage_clean_steady": 0.89,
+    "bias_naive_rel": 0.026603048595201816,
+    "coverage_naive": 0.69,
+    "power_clean": 0.9,
+    "truth_window_mean": 0.06610215473892685,
+    "truth_steady_mean": 0.05099295969297524
+  }
+}
