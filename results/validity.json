@@ -1,207 +1,268 @@
 {
   "srm_all": {
-    "chi2": 71.2173670716754,
-    "p": 3.1995930511605154e-17,
-    "n_treat": 194711,
-    "n_ctrl": 200013,
-    "share_treat": 0.49328391483669604
+    "chi2": 50.52220477227823,
+    "p": 1.1782413358074762e-12,
+    "n_treat": 195157,
+    "n_ctrl": 199623,
+    "share_treat": 0.49434368509043014
   },
   "srm_by_segment": [
     {
       "segment": "app_old=1",
-      "n": 30511,
-      "share_treat": 0.415587820785946,
-      "p": 3.957667184509222e-191
+      "n": 30932,
+      "share_treat": 0.4142635458424932,
+      "p": 8.478509071337481e-200
     },
     {
-      "segment": "device=mobile",
-      "n": 234528,
-      "share_treat": 0.4879332105334971,
-      "p": 1.4778859289253583e-31
+      "segment": "club=active",
+      "n": 366081,
+      "share_treat": 0.49451897257710725,
+      "p": 3.2993540998220414e-11
+    },
+    {
+      "segment": "news_sub=0",
+      "n": 257139,
+      "share_treat": 0.4938924083861258,
+      "p": 5.858850144430573e-10
+    },
+    {
+      "segment": "aov_band=none",
+      "n": 296670,
+      "share_treat": 0.49441466949809554,
+      "p": 1.169495120461409e-09
     },
     {
       "segment": "is_new=0",
-      "n": 236651,
-      "share_treat": 0.4928016361646475,
-      "p": 2.4956460702322193e-12
-    },
-    {
-      "segment": "source=organic",
-      "n": 138460,
-      "share_treat": 0.49318936877076414,
-      "p": 4.0096116572368256e-07
+      "n": 226103,
+      "share_treat": 0.49433222911681846,
+      "p": 7.042519331779344e-08
     },
     {
       "segment": "is_new=1",
-      "n": 158073,
-      "share_treat": 0.4940059339672177,
-      "p": 1.8765010310589929e-06
+      "n": 168677,
+      "share_treat": 0.49435904124450875,
+      "p": 3.5950349122976735e-06
     },
     {
-      "segment": "source=direct",
-      "n": 78713,
-      "share_treat": 0.49235831438263056,
-      "p": 1.80388320482744e-05
+      "segment": "age_band=25-39",
+      "n": 137032,
+      "share_treat": 0.49384085469087513,
+      "p": 5.116231390567289e-06
     },
     {
-      "segment": "source=paid",
-      "n": 118447,
-      "share_treat": 0.49406907730883853,
-      "p": 4.457527259563943e-05
+      "segment": "age_band=u25",
+      "n": 102869,
+      "share_treat": 0.4939777775617533,
+      "p": 0.00011198530580261925
     },
     {
-      "segment": "source=email",
-      "n": 59104,
-      "share_treat": 0.49316459122902,
-      "p": 0.0008887776371023958
+      "segment": "age_band=40+",
+      "n": 150286,
+      "share_treat": 0.4950827089682339,
+      "p": 0.0001375422343730508
     },
     {
-      "segment": "device=tablet",
-      "n": 32076,
-      "share_treat": 0.502400548696845,
-      "p": 0.3898630853440208
+      "segment": "news_sub=1",
+      "n": 137641,
+      "share_treat": 0.4951867539468618,
+      "p": 0.000355039380746942
     },
     {
-      "segment": "device=desktop",
-      "n": 128120,
-      "share_treat": 0.5007961286294099,
-      "p": 0.5687250122693592
+      "segment": "aov_band=60to100",
+      "n": 22373,
+      "share_treat": 0.4890269521297993,
+      "p": 0.0010285059417163643
+    },
+    {
+      "segment": "club=pre_create",
+      "n": 26816,
+      "share_treat": 0.4927282219570406,
+      "p": 0.017237921229545042
+    },
+    {
+      "segment": "aov_band=lt60",
+      "n": 45739,
+      "share_treat": 0.4955508428255974,
+      "p": 0.05703351951740095
+    },
+    {
+      "segment": "aov_band=ge100",
+      "n": 29998,
+      "share_treat": 0.49576638442562837,
+      "p": 0.14250706633566187
+    },
+    {
+      "segment": "club=other",
+      "n": 1883,
+      "share_treat": 0.483271375464684,
+      "p": 0.1465492304160477
     },
     {
       "segment": "app_old=0",
-      "n": 364213,
-      "share_treat": 0.4997927037200759,
-      "p": 0.8024273746496442
+      "n": 363848,
+      "share_treat": 0.5011515797805677,
+      "p": 0.1647532250311463
+    },
+    {
+      "segment": "age_band=unknown",
+      "n": 4593,
+      "share_treat": 0.493359460047899,
+      "p": 0.36807712647293045
     }
   ],
-  "srm_mobile_by_appold": {
+  "srm_by_appold": {
     "0": {
-      "chi2": 1.2698990770376979,
-      "p": 0.2597856138301003,
-      "n_treat": 101754,
-      "n_ctrl": 102263,
-      "share_treat": 0.49875255493414766
+      "chi2": 1.9300477122314812,
+      "p": 0.1647532250311463,
+      "n_treat": 182343,
+      "n_ctrl": 181505,
+      "share_treat": 0.5011515797805677
     },
     "1": {
-      "chi2": 869.6142702631838,
-      "p": 3.957667184509222e-191,
-      "n_treat": 12680,
-      "n_ctrl": 17831,
-      "share_treat": 0.415587820785946
+      "chi2": 909.492305702832,
+      "p": 8.478509071337481e-200,
+      "n_treat": 12814,
+      "n_ctrl": 18118,
+      "share_treat": 0.4142635458424932
     }
   },
   "srm_clean": {
-    "chi2": 0.06260347653708133,
-    "p": 0.8024273746496442,
-    "n_treat": 182031,
-    "n_ctrl": 182182,
-    "share_treat": 0.4997927037200759
+    "chi2": 1.9300477122314812,
+    "p": 0.1647532250311463,
+    "n_treat": 182343,
+    "n_ctrl": 181505,
+    "share_treat": 0.5011515797805677
   },
   "old_app_conv": [
     {
       "variant": 0,
-      "n": 17831,
-      "conv": 0.030284336268296786
+      "n": 18118,
+      "conv": 0.05348272436251242
     },
     {
       "variant": 1,
-      "n": 12680,
-      "conv": 0.04613564668769716
+      "n": 12814,
+      "conv": 0.0710941158108319
     }
   ],
   "naive_conv_lift_all": {
-    "diff": 0.002908718904572255,
-    "se": 0.0005829429941391221,
-    "lo": 0.001766171631019632,
-    "hi": 0.004051266178124878,
-    "p": 5.967556354408477e-07,
-    "mean_c": 0.03326283791553549,
-    "mean_t": 0.036171556820107746
+    "diff": 0.0025604555676162766,
+    "se": 0.0007199094539081286,
+    "lo": 0.0011494589658264465,
+    "hi": 0.003971452169406107,
+    "p": 0.0003744336579067598,
+    "mean_c": 0.05277447989460132,
+    "mean_t": 0.0553349354622176
   },
   "clean_conv_lift": {
-    "diff": 0.0019231158869492393,
-    "se": 0.0006049659954819121,
-    "lo": 0.0007374043239332705,
-    "hi": 0.003108827449965208,
-    "p": 0.0014784838530892935,
-    "mean_c": 0.03355435773018191,
-    "mean_t": 0.03547747361713115
+    "diff": 0.0015236901359633806,
+    "se": 0.0007458774292542247,
+    "lo": 6.179723774377816e-05,
+    "hi": 0.002985583034182983,
+    "p": 0.041078108657389326,
+    "mean_c": 0.05270378226495138,
+    "mean_t": 0.05422747240091476
   },
   "balance": [
     {
       "covariate": "is_new",
-      "all users": 0.0024,
-      "excl. old-app": 0.0038
+      "all users": 0.0001,
+      "excl. old-app": 0.0001
     },
     {
       "covariate": "pre_spend_90d",
-      "all users": -0.0031,
-      "excl. old-app": -0.0057
+      "all users": -0.0021,
+      "excl. old-app": -0.0026
     },
     {
       "covariate": "pre_orders_90d",
-      "all users": -0.0035,
-      "excl. old-app": -0.0057
+      "all users": -0.0014,
+      "excl. old-app": -0.0028
     },
     {
       "covariate": "app_old",
-      "all users": -0.0901,
+      "all users": -0.0936,
       "excl. old-app": 0.0
     },
     {
       "covariate": "arrival_day",
-      "all users": 0.0039,
+      "all users": -0.0029,
+      "excl. old-app": -0.0042
+    },
+    {
+      "covariate": "age_band=25-39",
+      "all users": -0.0015,
+      "excl. old-app": -0.002
+    },
+    {
+      "covariate": "age_band=40+",
+      "all users": 0.0023,
+      "excl. old-app": 0.0036
+    },
+    {
+      "covariate": "age_band=u25",
+      "all users": -0.0009,
+      "excl. old-app": -0.0017
+    },
+    {
+      "covariate": "age_band=unknown",
+      "all users": -0.0004,
+      "excl. old-app": -0.0003
+    },
+    {
+      "covariate": "club=active",
+      "all users": 0.0025,
+      "excl. old-app": 0.0041
+    },
+    {
+      "covariate": "club=other",
+      "all users": -0.0031,
+      "excl. old-app": -0.0037
+    },
+    {
+      "covariate": "club=pre_create",
+      "all users": -0.0017,
+      "excl. old-app": -0.0032
+    },
+    {
+      "covariate": "aov_band=60to100",
+      "all users": -0.0052,
+      "excl. old-app": -0.0055
+    },
+    {
+      "covariate": "aov_band=ge100",
+      "all users": 0.0016,
       "excl. old-app": 0.0022
     },
     {
-      "covariate": "device=mobile",
-      "all users": -0.0259,
-      "excl. old-app": -0.0047
+      "covariate": "aov_band=lt60",
+      "all users": 0.0017,
+      "excl. old-app": 0.0003
     },
     {
-      "covariate": "device=desktop",
-      "all users": 0.0208,
-      "excl. old-app": 0.003
+      "covariate": "aov_band=none",
+      "all users": 0.0005,
+      "excl. old-app": 0.0014
     },
     {
-      "covariate": "device=tablet",
-      "all users": 0.0108,
-      "excl. old-app": 0.0032
-    },
-    {
-      "covariate": "source=organic",
-      "all users": -0.0003,
-      "excl. old-app": -0.0002
-    },
-    {
-      "covariate": "source=paid",
-      "all users": 0.0021,
-      "excl. old-app": 0.003
-    },
-    {
-      "covariate": "source=email",
-      "all users": -0.0002,
-      "excl. old-app": -0.0008
-    },
-    {
-      "covariate": "source=direct",
-      "all users": -0.0018,
-      "excl. old-app": -0.0026
+      "covariate": "news_sub",
+      "all users": 0.0025,
+      "excl. old-app": 0.0022
     }
   ],
   "aa": {
     "conv_z": {
-      "fpr": 0.054,
+      "fpr": 0.05,
       "n_sims": 1000
     },
     "margin_welch": {
-      "fpr": 0.046,
+      "fpr": 0.052,
       "n_sims": 1000
     },
     "margin_cuped": {
-      "fpr": 0.047,
+      "fpr": 0.05,
       "n_sims": 1000
     }
   },
-  "aa_n": 182182
+  "aa_n": 181505
 }

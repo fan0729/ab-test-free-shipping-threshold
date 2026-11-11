@@ -5,10 +5,10 @@ md = lambda s: nbf.v4.new_markdown_cell(s.strip())
 code = lambda s: nbf.v4.new_code_cell(s.strip())
 cells = [
 md("""# Free-shipping threshold A/B test — walkthrough
-**Simulated data** (known ground truth). This notebook re-computes the key results live with the toolkit in `src/abtools.py`; the full pipeline, Monte Carlo validation and memo are in the repo.
+**Semi-synthetic data:** real H&M customers, order history and control orders, with a simulated treatment effect (known ground truth). This notebook re-computes the key results live with the toolkit in `src/abtools.py`; the full pipeline, Monte Carlo validation and memo are in the repo.
 
 **Feature:** free-shipping threshold at checkout, $100 → $75.
-**Decision:** roll out to everyone, roll out to a segment, or keep $100.
+**Decision:** roll out to everyone, run a targeted follow-up in a segment, or keep $100.
 **Decision metric:** margin per visitor (conversion × margin per order). **Guardrail:** return rate."""),
 code("""
 import sys, json
@@ -33,12 +33,11 @@ md("## 2. Validity first: sample ratio mismatch"),
 code("""
 t, c = df[df.variant == 1], df[df.variant == 0]
 print("SRM, all users:   ", srm_test(len(t), len(c)))
-m = df[df.device == "mobile"]
-for flag, g in m.groupby("app_old"):
+for flag, g in df.groupby("app_old"):
     r = srm_test((g.variant == 1).sum(), (g.variant == 0).sum())
-    print(f"mobile, app_old={flag}: share treated {r['share_treat']:.3f}, p={r['p']:.1e}")
+    print(f"app_old={flag}: share treated {r['share_treat']:.3f}, p={r['p']:.1e}")
 """),
-md("The mismatch is confined to old-app mobile users. What does ignoring it cost?"),
+md("The mismatch is confined to the old-app group (an injected logging fault). What does ignoring it cost?"),
 code("""
 clean = df[df.app_old == 0]
 naive = compare(t.purchased.values.astype(float), c.purchased.values.astype(float))
@@ -71,20 +70,20 @@ mask = (clean.variant == 1).values
 rows["CUPED"] = welch(yadj[mask], yadj[~mask])
 for k, v in rows.items():
     print(f"{k:11s} {v['diff']/base:+.2%}  [{v['lo']/base:+.2%}, {v['hi']/base:+.2%}]")
-print(f"CUPED: corr {diag['corr']:.2f}, variance reduction {diag['var_reduction']:.1%}  <- small: rare purchases, 40% new users")
+print(f"CUPED: corr {diag['corr']:.2f}, variance reduction {diag['var_reduction']:.1%}  <- small: rare purchases, many new users")
 """),
-md("**Reading:** conversion is clearly up, margin per visitor is inconclusive. That matches the design doc's warning that 14 days is under-powered for margin."),
+md("**Reading:** margin per visitor is inconclusive overall, and the conversion lift is modest. That matches the design doc's warning that 14 days is under-powered for margin."),
 md("## 5. Peeking: why you cannot stop at the first p < 0.05"),
 code("""
 k = json.load(open("../results/peeking.json"))
 print({n: round(v, 3) for n, v in k["null"].items() if not n.startswith("avg")})
 Image("../figures/peeking.png")
 """),
-md("## 6. Segments and novelty\nSegments are hypotheses; formal interaction test and multiple-testing correction are in `memo/02_decision_memo.md`."),
+md("## 6. Segments and novelty\nSegments are hypotheses; formal interaction test and multiple-testing correction are in `memo/02_decision_memo.md`. New customers are the only pre-registered segment whose conversion lift survives correction; the other cells are the multiple-testing lesson."),
 code("""
 Image("../figures/segments_forest.png")
 """),
-md("## 7. The decision\nThe rule from the design doc, applied to the results: conversion significantly up, margin CI lower bound above −2%, returns not significantly up."),
+md("## 7. The decision\nThe two-tier rule from the design doc, applied to the results. Tier 1: conversion significantly up, margin CI lower bound above −2%, returns not significantly up. Tier 2: a pre-registered segment with conversion up after BH correction and a margin gain not ruled out."),
 code("""
 A = json.load(open("../results/analysis.json"))
 m = {r["metric"]: r for r in A["metrics"]}
@@ -95,9 +94,11 @@ returns_ok = not (rt_["p_holm"] < 0.05 and rt_["diff"] > 0)
 print(f"conversion significantly up (Holm): {conv_up}  ({cv_['rel']:+.1%}, p={cv_['p_holm']:.3f})")
 print(f"margin CI lower bound above -2%:    {margin_ok}  (lower bound {mp_['rel_lo']:+.1%})")
 print(f"returns not significantly up:       {returns_ok}")
-print("DECISION:", "ship to everyone" if conv_up and margin_ok and returns_ok else "do not ship to everyone; targeted follow-up")
+print("TIER 1 (everyone):", "ship" if conv_up and margin_ok and returns_ok else "do not ship to everyone")
+seg = [r for r in A["segments"] if r["status"] == "pre-registered" and r["conv_p_bh"] < 0.05 and r["conv_rel"] > 0 and r["margin_hi"] > 0]
+print("TIER 2 (segments earning a targeted follow-up test):", [r["segment"] for r in seg])
 """),
-md("## 8. Reveal: how close were we?\nBecause the data is simulated, we know the truth."),
+md("## 8. Reveal: how close were we?\nBecause the treatment effect is simulated on top of real customers, we know the truth."),
 code("""
 R = json.load(open("../results/reveal.json"))["true_effects"]
 print(f"true conversion lift (window / steady state): {R['clean_window']['conv_rel']:+.1%} / {R['clean_steady']['conv_rel']:+.1%}")

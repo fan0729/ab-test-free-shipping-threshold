@@ -1,6 +1,6 @@
 """Phase 5: analysis (layered).  Run AFTER 02_validity.py.
 
-Population decision (from validity checks): the logging bug makes old-app mobile users unusable,
+Population decision (from validity checks): the logging bug makes old-app users unusable,
 so the primary analysis excludes app_old == 1 in BOTH arms (a pre-treatment definition).
 The naive all-user result is reported only to show the size of the bias.
 """
@@ -68,9 +68,8 @@ yadj, cdiag = cuped_adjust(df.margin.values, df.pre_spend_90d.values)
 df["margin_cuped"] = yadj
 tt, cc = split(df)
 est["CUPED (pre-period spend)"] = welch(tt.margin_cuped.values, cc.margin_cuped.values)
-est["Regression adj. (pre-spend, is_new, device; interacted)"] = regression_adjust(
-    df.assign(mobile=(df.device == "mobile").astype(int), desktop=(df.device == "desktop").astype(int)),
-    "margin", covars=("pre_spend_90d", "is_new", "mobile", "desktop"))
+est["Regression adj. (pre-spend, is_new, age<25, club member; interacted)"] = regression_adjust(
+    df, "margin", covars=("pre_spend_90d", "is_new", "young", "club_active"))
 for k, v in est.items():
     v["rel"], v["rel_lo"], v["rel_hi"] = v["diff"] / base, v["lo"] / base, v["hi"] / base
     v["width_vs_raw"] = (v["hi"] - v["lo"]) / (est["Welch t-test (raw)"]["hi"] - est["Welch t-test (raw)"]["lo"])
@@ -112,8 +111,10 @@ out["aov_delta_vs_boot"] = dict(delta_ci=[aov_row.lo, aov_row.hi], boot_ci=aov_b
 
 # ---- D. heterogeneity
 segs = [("New vs returning", "is_new", {1: "New", 0: "Returning"}, "pre-registered"),
-        ("Device", "device", {k: k.title() for k in ["mobile", "desktop", "tablet"]}, "pre-registered"),
-        ("Traffic source", "source", {k: k.title() for k in ["organic", "paid", "email", "direct"]}, "exploratory")]
+        ("Typical order size", "aov_band", {"lt60": "Typical order < $60", "60to100": "Typical order $60-100", "ge100": "Typical order $100+"}, "pre-registered"),
+        ("Age", "age_band", {"u25": "Age < 25", "25-39": "Age 25-39", "40+": "Age 40+"}, "pre-registered"),
+        ("Club status", "club", {"active": "Club: active", "pre_create": "Club: pre-create", "other": "Club: other"}, "exploratory"),
+        ("Fashion news", "news_sub", {1: "News subscriber", 0: "Not subscribed"}, "exploratory")]
 rows = []
 for fam, col, labels, status in segs:
     for v, lab in labels.items():
@@ -130,7 +131,7 @@ seg["conv_p_bh"] = adjust_pvalues(seg.conv_p.values, "fdr_bh")
 out["segments"] = seg.to_dict("records")
 # formal interaction tests (is the effect DIFFERENT across segments?)
 inter = {}
-for col in ["is_new", "device", "source"]:
+for col in ["is_new", "aov_band", "age_band", "club", "news_sub"]:
     full = smf.ols(f"margin ~ variant * C({col})", df).fit(cov_type="HC1")
     red = smf.ols(f"margin ~ variant + C({col})", df).fit(cov_type="HC1")
     names_i = [n for n in full.params.index if n.startswith("variant:")]
@@ -138,6 +139,8 @@ for col in ["is_new", "device", "source"]:
     inter[col] = dict(p=float(w.pvalue))
 out["interaction_tests_margin"] = inter
 
+seg_all = seg
+seg = seg[seg.n >= 5000].reset_index(drop=True)   # tiny cells (e.g. club "other", n < 2,000) would squash the axis
 fig, axs = plt.subplots(1, 2, figsize=(10, 4.4), sharey=True)
 ys = np.arange(len(seg))[::-1]
 for ax, (m, ttl) in zip(axs, [("conv", "Conversion"), ("margin", "Margin per visitor")]):
@@ -148,8 +151,9 @@ for ax, (m, ttl) in zip(axs, [("conv", "Conversion"), ("margin", "Margin per vis
     ax.axvline(0, color=MUTED, lw=1)
     ax.set_title(f"{ttl}: relative effect (%), 95% CI", fontsize=10)
 axs[0].set_yticks(ys); axs[0].set_yticklabels([f"{r.segment}" for _, r in seg.iterrows()])
-axs[0].text(0.0, -0.13, "Blue = pre-registered segment, gray = exploratory", transform=axs[0].transAxes, fontsize=8, color=MUTED)
+axs[0].text(0.0, -0.13, "Blue = pre-registered segment, gray = exploratory; cells with n < 5,000 not drawn", transform=axs[0].transAxes, fontsize=8, color=MUTED)
 fig.tight_layout(); fig.savefig(f"{ROOT}/figures/segments_forest.png"); plt.close(fig)
+seg = seg_all
 
 # ---- E. novelty effect
 rows = []

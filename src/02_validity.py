@@ -21,15 +21,14 @@ out["srm_all"] = srm_test(len(t), len(c))
 
 # ---- 2. Where does the mismatch live?  (chi-square within each pre-treatment segment)
 rows = []
-for col in ["device", "source", "is_new", "app_old"]:
+for col in ["age_band", "club", "news_sub", "aov_band", "is_new", "app_old"]:
     for v, g in df.groupby(col):
         r = srm_test((g.variant == 1).sum(), (g.variant == 0).sum())
         rows.append(dict(segment=f"{col}={v}", n=len(g), share_treat=r["share_treat"], p=r["p"]))
 seg = pd.DataFrame(rows).sort_values("p")
 out["srm_by_segment"] = seg.to_dict("records")
-g = df[(df.device == "mobile")]
-out["srm_mobile_by_appold"] = {str(k): srm_test((x.variant == 1).sum(), (x.variant == 0).sum())
-                               for k, x in g.groupby("app_old")}
+out["srm_by_appold"] = {str(k): srm_test((x.variant == 1).sum(), (x.variant == 0).sum())
+                        for k, x in df.groupby("app_old")}
 # SRM after excluding the affected segment (pre-treatment definition, available in both arms)
 clean = df[df.app_old == 0]
 out["srm_clean"] = srm_test((clean.variant == 1).sum(), (clean.variant == 0).sum())
@@ -48,10 +47,10 @@ def balance(a, b, label):
     rows = []
     for col in ["is_new", "pre_spend_90d", "pre_orders_90d", "app_old", "arrival_day"]:
         rows.append((col, smd(a[col].values.astype(float), b[col].values.astype(float))))
-    for d in ["mobile", "desktop", "tablet"]:
-        rows.append((f"device={d}", smd((a.device == d).values.astype(float), (b.device == d).values.astype(float))))
-    for s in ["organic", "paid", "email", "direct"]:
-        rows.append((f"source={s}", smd((a.source == s).values.astype(float), (b.source == s).values.astype(float))))
+    for col in ["age_band", "club", "aov_band"]:
+        for v in sorted(df[col].unique()):
+            rows.append((f"{col}={v}", smd((a[col] == v).values.astype(float), (b[col] == v).values.astype(float))))
+    rows.append(("news_sub", smd(a.news_sub.values.astype(float), b.news_sub.values.astype(float))))
     return pd.DataFrame(rows, columns=["covariate", label]).set_index("covariate")
 
 bal = balance(t, c, "all users").join(balance(ct, cc, "excl. old-app"))
@@ -62,7 +61,7 @@ b = bal.sort_values("all users")
 y = np.arange(len(b))
 ax.axvspan(-0.1, 0.1, color="#eef0f2", zorder=0)
 ax.scatter(b["all users"], y, color=ORANGE, s=36, label="All logged users", zorder=3)
-ax.scatter(b["excl. old-app"], y, color=BLUE, s=36, label="Excluding old-app mobile", zorder=3)
+ax.scatter(b["excl. old-app"], y, color=BLUE, s=36, label="Excluding old-app users", zorder=3)
 ax.set_yticks(y); ax.set_yticklabels(b.index, fontsize=8)
 ax.axvline(0, color=MUTED, lw=0.8)
 ax.set_xlabel("Standardised mean difference (treatment − control); band = ±0.1")
@@ -98,6 +97,6 @@ fig.suptitle("A/A test: p-values should be uniform; ~5% below 0.05", x=0.01, ha=
 fig.tight_layout(); fig.savefig(f"{ROOT}/figures/aa_pvalues.png"); plt.close(fig)
 
 json.dump(out, open(f"{ROOT}/results/validity.json", "w"), indent=2)
-print(json.dumps({k: out[k] for k in ["srm_all", "srm_clean", "srm_mobile_by_appold", "old_app_conv", "naive_conv_lift_all", "clean_conv_lift", "aa"]}, indent=1))
+print(json.dumps({k: out[k] for k in ["srm_all", "srm_clean", "srm_by_appold", "old_app_conv", "naive_conv_lift_all", "clean_conv_lift", "aa"]}, indent=1))
 print(seg.head(6).to_string())
 print(bal.round(3).to_string())

@@ -30,7 +30,7 @@ def one(rep):
     srm_cl = srm_test((clean.variant == 1).sum(), (clean.variant == 0).sum())
     r["srm_all_p"], r["srm_clean_p"] = srm_all["p"], srm_cl["p"]
 
-    tr_w, tr_s = tw["clean (excl. old-app mobile)"], ts["clean (excl. old-app mobile)"]
+    tr_w, tr_s = tw["clean (excl. old-app)"], ts["clean (excl. old-app)"]
     m = welch(t.margin.values, c.margin.values)
     r.update(m_est=m["diff"], m_lo=m["lo"], m_hi=m["hi"], m_truth_w=tr_w["margin_ate"], m_truth_s=tr_s["margin_ate"])
     mw = welch(t.margin.clip(upper=CAP).values, c.margin.clip(upper=CAP).values)

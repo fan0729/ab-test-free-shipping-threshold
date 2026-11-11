@@ -4,7 +4,7 @@ NOT RUN in the build environment (network access to Criteo was blocked). Run it 
 
     1. Download criteo-research-uplift-v2.1.csv.gz from the Criteo AI Lab uplift dataset page
        (https://ailab.criteo.com/criteo-uplift-prediction-dataset/) into data/criteo/
-    2. python src/05_criteo_replication.py --path data/criteo/criteo-research-uplift-v2.1.csv.gz
+    2. python extras/criteo_replication.py --path data/criteo/criteo-research-uplift-v2.1.csv.gz
 
 Dataset facts to VERIFY against the dataset's own documentation before trusting the defaults:
   * columns: f0..f11 (anonymised features), treatment (0/1), conversion, visit, exposure
@@ -20,7 +20,7 @@ All numbers are printed and saved to results/criteo.json -- cite only what this 
 import argparse, json, os, sys
 import numpy as np, pandas as pd
 
-sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 from abtools import srm_test, smd, compare, regression_adjust, two_prop_z
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
