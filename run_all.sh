@@ -3,7 +3,12 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 mkdir -p data results figures memo
-python3 data_gen/generate_experiment.py      # simulated experiment + pilot history + hidden truth
+if [[ ! -f data/hm_base_experiment.csv.gz || ! -f data/hm_base_pilot.csv.gz ]]; then
+  echo "Missing data/hm_base_*.csv.gz. One-time step (needs the Kaggle H&M files, see README 'Reproduce'):"
+  echo "  unzip -p transactions_train.csv.zip | python3 data_gen/prepare_hm_base.py --customers customers.csv --out data/hm_base"
+  exit 1
+fi
+python3 data_gen/generate_experiment.py      # semi-synthetic experiment on real H&M customers + real pilot window + hidden truth
 python3 src/01_power.py   > /dev/null        # planning from pilot only
 python3 src/02_validity.py > /dev/null       # SRM, balance, A/A
 python3 src/03_analysis.py > /dev/null       # main analysis

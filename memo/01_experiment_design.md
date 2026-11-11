@@ -1,6 +1,6 @@
 # Experiment Design: Free-Shipping Threshold $100 → $75
 
-*Status: drafted before analysing the experiment (see the process note in section 1). Planning inputs come from a separate historical sample of 150,000 control-experience users. All data in this project is **simulated**.*
+*Status: version 2 (semi-synthetic). The customers, order history and control outcomes are **real H&M data**; the treatment effect, returns and the logging fault are **simulated** (see the README). Planning inputs come from a separate real sample of 150,000 customers in the 14 days before the test window.*
 
 ## 1. Product brief
 | | |
@@ -12,7 +12,7 @@
 | **Why it is not obvious** | Every order in the $75–$100 band becomes less profitable even if more people buy, so conversion alone would score the feature as a win |
 | **Decision** | Roll out at $75 to everyone, roll out to a segment, or keep $100 |
 | **Reversibility** | A threshold is a config change, so a wrong launch can be rolled back. The cost of being wrong is the margin given away until someone notices |
-| **What the decision is worth (planning figure, all traffic)** | About 10.4M visitors a year × $1.06 margin per visitor ≈ $11.1M margin a year. 1% of margin per visitor ≈ $111K a year; the 6.7% MDE ≈ $739K a year |
+| **What the decision is worth (planning figure, all traffic)** | About 10.4M visitors a year × $2.08 margin per visitor ≈ $21.7M margin a year. 1% of margin per visitor ≈ $217K a year; the 5.5% MDE ≈ $1,189K a year |
 
 **Metric tree**
 ```
@@ -25,12 +25,12 @@ margin per order    =  42% × basket × (1 − return)  −  net shipping cost  
 | Outcome | Condition | Action |
 |---|---|---|
 | **Ship to everyone** | Conversion significantly up (Holm p < 0.05) **and** margin per visitor 95% CI lower bound above −2% **and** return rate not significantly up | Roll out; keep a 5% holdout |
-| **Do not ship broadly; targeted follow-up** | Anything else that is not a kill, i.e. margin is inconclusive | Test the pre-registered segment (new customers) or a cheaper variant |
-| **Keep $100** | Margin CI upper bound below 0, **or** conversion not significantly up, **or** return rate significantly up | Stop |
+| **Keep $100 for everyone** | Margin CI upper bound below 0, **or** conversion not significantly up (Holm), **or** return rate significantly up | Do not roll out broadly |
+| **Targeted follow-up (segment tier)** | Applied on top of the rows above: a pre-registered segment whose conversion lift is significant after Benjamini–Hochberg correction across segments **and** whose margin CI upper bound is above 0 | Run a follow-up test in that segment only, sized for the margin lift Finance requires. A segment is never launched on this result alone |
 
 The −2% is the margin loss Growth would tolerate in exchange for new-customer growth. In a real project I would agree it with Finance before the test.
 
-*Process note: in this portfolio build, the first draft already contained the margin criterion (CI lower bound above −2%) and the rule "inconclusive margin means do not ship broadly". The Keep-$100 row, the return-rate wording and the table layout were added afterwards for clarity. The recommendation does not depend on them.*
+*Process note: version 1 used fully simulated data and ended "margin inconclusive; follow up with new customers". A reviewer asked for real data and for a segment-level decision. In version 2 the segment tier above was added in response to that feedback, **after** I had seen the overall version-2 results, so it is a response to feedback and not a pre-registration. "New vs returning" was fixed as a pre-registered segment in version 1, before any data; typical order size and age were added in version 2 before the segment analysis was run. Because I also wrote the simulator's assumed responders, the segment analysis tests whether the methods separate real from null segments; it does not discover who responds in the real world.*
 
 ## 2. Design
 | Item | Choice | Why |
@@ -39,7 +39,8 @@ The −2% is the margin loss Growth would tolerate in exchange for new-customer 
 | Allocation | 50 / 50 | Maximises power |
 | Window | 14 days | Covers two full weekly cycles; business cap on run time |
 | Traffic | about 28,571 users/day, 400,000 total, 200,000 per arm | Planning assumption |
-| Exposure logging | Client-side tag | **Known risk:** tag failures would cause SRM, so SRM is checked first |
+| Exposure logging | Client-side tag | **Known risk:** tag failures would cause SRM, so SRM is checked first. The fault in this project is injected (simulated) to test that check |
+| Real vs simulated | Real: customers, history, control orders. Simulated: treatment effect, returns | No public dataset contains a shipping-threshold experiment |
 
 ## 3. Metrics
 | Role | Metric | Definition |
@@ -48,29 +49,29 @@ The −2% is the margin loss Growth would tolerate in exchange for new-customer 
 | Driver (secondary) | Conversion rate; net revenue per visitor | Did the feature do what it was built to do? |
 | Mechanism (diagnostic) | AOV; items per order; net shipping cost per order | Explain *why* margin moved. Shipping cost rises by construction, so it cannot be a guardrail |
 | Guardrail | Return rate per order | Extra buyers may return more. Page-load time is not simulated |
-| Pre-registered segments | New vs returning; device | Chosen *before* data, because new customers are expected to respond most |
-| Exploratory segments | Traffic source | Reported but flagged exploratory |
+| Pre-registered segments | New vs returning; typical order size (pre-period average order); age band | New customers and shoppers whose usual order sits just under the threshold are the ones a lower threshold can plausibly win |
+| Exploratory segments | Club status; fashion-news subscription | Reported but flagged exploratory |
 
 **Assumptions (cost model):** carrier cost $9.00 per order; customers under the threshold pay a $7.50 fee, so net shipping cost is $1.50 (paid) or $9.00 (free).
 
 ## 4. Baseline and variance (from the historical sample)
-- Conversion: **3.24%**
-- Margin per visitor: **$1.06**, standard deviation **$8.00** (coefficient of variation 7.5: zero-inflated and heavy-tailed)
-- Outlier rule: winsorise per-user margin at the pilot 99.95th percentile (**$121.94**); report raw and winsorised results
+- Conversion: **6.57%**
+- Margin per visitor: **$2.08**, standard deviation **$12.86** (coefficient of variation 6.2: zero-inflated and heavy-tailed)
+- Outlier rule: winsorise per-user margin at the pilot 99.95th percentile (**$199.31**); report raw and winsorised results
 
 ## 5. Power and sample size (α = 0.05 two-sided, power 80%)
 | Question | Answer |
 |---|---|
-| Users per arm needed for a **5%** relative lift in margin per visitor | **355,011** → about **25 days** at planned traffic |
+| Users per arm needed for a **5%** relative lift in margin per visitor | **240,404** → about **17 days** at planned traffic |
 | Users per arm available in 14 days | **200,000** |
-| Min. detectable effect on margin per visitor in 14 days | **6.7%** relative (6.6% after covariate adjustment) |
-| Min. detectable effect on conversion in 14 days | **4.9%** relative |
-| Simulation check of power at the margin MDE | formula says 80%, bootstrap simulation says **76%** at a 6.7% effect (heavy tails make the formula optimistic) |
+| Min. detectable effect on margin per visitor in 14 days | **5.5%** relative (5.3% after covariate adjustment) |
+| Min. detectable effect on conversion in 14 days | **3.4%** relative |
+| Simulation check of power at the margin MDE | formula says 93%, bootstrap simulation says **89%** at a 6.7% effect (heavy tails make the formula optimistic) |
 
 ![MDE vs sample size](../figures/power_curve.png)
 
 **Honest planning conclusion:** a 14-day test is well powered for conversion but **under-powered for margin per visitor**. We accept this because 14 days is the business cap, and we record it up front: if margin per visitor comes back inconclusive, that is the expected outcome, not a failure of the test.
-Covariate adjustment helps little (2.1% variance reduction in the pilot) because a purchase is a rare event and 40% of users are new with no history.
+Covariate adjustment helps little (5.1% variance reduction in the pilot) because a purchase is a rare event and 44% of users are new with no history.
 
 ## 6. Analysis plan (fixed in advance)
 1. **Validity first:** SRM chi-square at α = 0.001; covariate balance (|SMD| > 0.1 flagged); 1,000-split A/A test of the pipeline.

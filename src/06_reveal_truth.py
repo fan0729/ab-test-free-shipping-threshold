@@ -10,7 +10,7 @@ truth = json.load(open(f"{ROOT}/data/truth.json"))
 A = json.load(open(f"{ROOT}/results/analysis.json"))
 V = json.load(open(f"{ROOT}/results/validity.json"))
 tw, ts = truth["experiment_window"], truth["steady_state"]
-CL = "clean (excl. old-app mobile)"
+CL = "clean (excl. old-app)"
 rows = []
 
 
@@ -32,8 +32,10 @@ res_main = res.dropna(subset=["lo"]).copy()
 # segment CIs on $ scale: rebuild from rel CI and control mean
 seg_rows = []
 for r in A["segments"]:
-    key = {"New": "new", "Returning": "returning", "Mobile": "mobile", "Desktop": "desktop", "Tablet": "tablet",
-           "Organic": "src_organic", "Paid": "src_paid", "Email": "src_email", "Direct": "src_direct"}[r["segment"]]
+    key = {"New": "new", "Returning": "returning", "Typical order < $60": "aov_lt60", "Typical order $60-100": "aov_60to100",
+           "Typical order $100+": "aov_ge100", "Age < 25": "age_u25", "Age 25-39": "age_25-39", "Age 40+": "age_40+",
+           "Club: active": "club_active", "Club: pre-create": "club_pre_create", "Club: other": "club_other",
+           "News subscriber": "news_yes", "Not subscribed": "news_no"}[r["segment"]]
     # relative-effect CI on rel scale vs the TRUE relative effect in the same segment
     seg_rows.append(dict(segment=r["segment"], status=r["status"], est_rel=r["margin_rel"], lo=r["margin_lo"], hi=r["margin_hi"],
                          truth_window_rel=tw[key]["margin_rel"], truth_steady_rel=ts[key]["margin_rel"],
@@ -67,7 +69,7 @@ ax.errorbar(daily.day, daily.rel * 100, yerr=[(daily.rel - daily.lo) * 100, (dai
             label="Estimate ± 95% CI")
 ax.plot(range(14), np.array(truth["by_day_conv_rel"]) * 100, color=ORANGE, lw=2, label="True lift (known from simulation)")
 ax.axhline(ts[CL]["conv_rel"] * 100, color=MUTED, lw=1, ls="--")
-ax.text(0.1, ts[CL]["conv_rel"] * 100 + 2.2, "True steady state", color=MUTED, ha="left", fontsize=9)
+ax.text(13.4, ts[CL]["conv_rel"] * 100 - 4.2, "True steady state", color=MUTED, ha="right", fontsize=9)
 ax.axhline(0, color=MUTED, lw=0.8)
 ax.set_xlabel("Arrival day"); ax.set_ylabel("Conversion lift (relative, %)")
 ax.set_title("The decay was real, but daily data could not resolve it")
